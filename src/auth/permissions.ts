@@ -21,8 +21,6 @@ export const PERMISSIONS = {
 
   ASSIGNMENTS: [
     ROLES.ADMIN,
-    ROLES.HR,
-    ROLES.KETOAN,
   ],
 
   REPORTS: [
@@ -34,6 +32,7 @@ export const PERMISSIONS = {
     ROLES.ADMIN,
     ROLES.HR,
   ],
+
   APPROVALS_EMPLOYEE: [
     ROLES.KETOAN,
     ROLES.NHANVIEN,
@@ -47,12 +46,39 @@ export const PERMISSIONS = {
   BENEFITS: [
     ROLES.ADMIN,
     ROLES.HR,
+    ROLES.KETOAN,
   ],
 
   NOTIFICATIONS: [
     ROLES.ADMIN,
     ROLES.HR,
     ROLES.NHANVIEN,
+    ROLES.KETOAN,
   ],
 
+  // ====== ADD FOR ACCOUNTANT ======
+  FINANCE_DASHBOARD: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  ATTENDANCE_SUMMARY: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  PAYROLL_APPROVAL: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  PAYROLL_DETAIL: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  TAX_DEDUCTION: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
 };

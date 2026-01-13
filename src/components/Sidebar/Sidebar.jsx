@@ -32,11 +32,19 @@ export default function Sidebar() {
     { path: "/assignments", icon: "assignment_ind", label: "Phân công công việc", permissions: PERMISSIONS.ASSIGNMENTS },
     { path: "/reports", icon: "analytics", label: "Báo cáo & Thống kê", permissions: PERMISSIONS.REPORTS },
     { path: "/approvals", icon: "fact_check", label: "Duyệt yêu cầu", permissions: PERMISSIONS.APPROVALS },
-    { path: "/ApprovalsEmployee", icon: "fact_check", label: "Yêu cầu", permissions: PERMISSIONS.APPROVALS_EMPLOYEE },
+    { path: "/approvals-employee", icon: "fact_check", label: "Yêu cầu", permissions: PERMISSIONS.APPROVALS_EMPLOYEE },
+
+    // ===== ACCOUNTANT =====
+    { path: "/finance", icon: "account_balance", label: "Tổng quan tài chính", permissions: PERMISSIONS.FINANCE_DASHBOARD },
+    { path: "/attendance-summary", icon: "event_available", label: "Tổng hợp chấm công", permissions: PERMISSIONS.ATTENDANCE_SUMMARY },
+    { path: "/payroll-approval", icon: "payments", label: "Duyệt bảng lương", permissions: PERMISSIONS.PAYROLL_APPROVAL },
+    { path: "/tax-deduction", icon: "request_quote", label: "Thuế & Khấu trừ", permissions: PERMISSIONS.TAX_DEDUCTION },
+
     { path: "/account-permission", icon: "manage_accounts", label: "Quản lý tài khoản & Phân quyền", permissions: PERMISSIONS.ACCOUNT },
     { path: "/benefits", icon: "health_and_safety", label: "Phúc lợi & Bảo hiểm", permissions: PERMISSIONS.BENEFITS },
     { path: "/notifications", icon: "notifications", label: "Thông báo & Nhắc nhở", permissions: PERMISSIONS.NOTIFICATIONS },
   ], [user?.role]);
+
 
 
   return (

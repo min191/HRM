@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { login as mockLogin } from "../services/userService";
+import { Role } from "./roles";
 
-/* ====== TYPES ====== */
+/* ===== TYPES ===== */
 export interface User {
   id: number;
   username: string;
-  role: "admin" | "HR" | "ketoan" | "nhanvien";
+  role: Role;
   name: string;
 }
 
@@ -16,24 +17,22 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
-/* ====== CONTEXT ====== */
+/* ===== CONTEXT ===== */
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/* ====== PROVIDER ====== */
+/* ===== PROVIDER ===== */
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem("user");
     return saved ? JSON.parse(saved) : null;
   });
 
-  /* LOGIN */
   const login = async (username: string, password: string) => {
     const res = await mockLogin(username, password);
-    setUser(res);
+    setUser(res as User);
     localStorage.setItem("user", JSON.stringify(res));
   };
 
-  /* LOGOUT */
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -53,10 +52,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-/* ====== HOOK ====== */
+/* ===== HOOK ===== */
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context)
+  if (!context) {
     throw new Error("useAuth must be used inside AuthProvider");
+  }
   return context;
 };

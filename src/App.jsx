@@ -1,116 +1,192 @@
 import React from "react";
-
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { PERMISSIONS } from "./auth/permissions";
+import { LayoutProvider } from "./layouts/LayoutContext";
 
 import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/LoginPages/Login";
 import Unauthorized from "./pages/LoginPages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-import Assignment from "./pages/Assignment";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/EmployeesPages/Employees";
 import EmployeesDetail from "./pages/EmployeesPages/EmployeesDetail";
-
-// Các page còn lại
-import AccountPermission from "./pages/AccountPermission";
-import Approvals from "./pages/Approvals";
-import Benefits from "./pages/Benefits";
-import Notifications from "./pages/Notifications";
+import Assignment from "./pages/Assignment";
 import Reports from "./pages/Reports";
+import Approvals from "./pages/Approvals";
 import ApprovalsEmployee from "./pages/ApprovalsEmployee";
+import AccountPermission from "./pages/AccountPermission";
+import BenefitsInsurance from "./pages/BenefitsInsurance";
+import Notifications from "./pages/Notifications";
+
+import AttendanceSummary from "./pages/AccountantPages/AttendanceSummary";
+import FinanceDashboard from "./pages/AccountantPages/FinanceDashboard";
+import PayrollApprovalPage from "./pages/AccountantPages/PayrollApprovalPage";
+import PayrollDetail from "./pages/AccountantPages/PayrollDetail";
+import TaxAndDeduction from "./pages/AccountantPages/TaxAndDeduction";
 
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+      <LayoutProvider>
+        <BrowserRouter>
+          <Routes>
 
-          {/* ===== PUBLIC ===== */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
+            {/* ===== PUBLIC ===== */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* ===== LOGIN REQUIRED ===== */}
-          <Route element={<ProtectedRoute />}>
-            <Route element={<MainLayout />}>
+            {/* ===== AUTH REQUIRED ===== */}
+            <Route element={<ProtectedRoute />}>
+              <Route element={<MainLayout />}>
 
-              {/* Dashboard */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.DASHBOARD} />}
-              >
-                <Route path="/" element={<Dashboard />} />
-              </Route>
+                {/* ===== CORE ===== */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.DASHBOARD}>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Employees */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.EMPLOYEES} />}
-              >
-                <Route path="/employees" element={<Employees />} />
-              </Route>
+                <Route
+                  path="/employees"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.EMPLOYEES}>
+                      <Employees />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.EMPLOYEE_DETAIL} />}
-              >
-                <Route path="/employees/:id" element={<EmployeesDetail />} />
-              </Route>
+                <Route
+                  path="/employees/:id"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.EMPLOYEE_DETAIL}>
+                      <EmployeesDetail />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Assignments */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.ASSIGNMENTS} />}
-              >
-                <Route path="/assignments" element={<Assignment />} />
-              </Route>
+                <Route
+                  path="/assignments"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.ASSIGNMENTS}>
+                      <Assignment />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Reports */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.REPORTS} />}
-              >
-                <Route path="/reports" element={<Reports />} />
-              </Route>
+                <Route
+                  path="/reports"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.REPORTS}>
+                      <Reports />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Approvals */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.APPROVALS} />}
-              >
-                <Route path="/approvals" element={<Approvals />} />
-              </Route>
+                <Route
+                  path="/approvals"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.APPROVALS}>
+                      <Approvals />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Approvals of Employee */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.APPROVALS_EMPLOYEE} />}
-              >
-                <Route path="/ApprovalsEmployee" element={<ApprovalsEmployee />} />
-              </Route>
+                <Route
+                  path="/approvals-employee"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.APPROVALS_EMPLOYEE}>
+                      <ApprovalsEmployee />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* AccountPermission */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.ACCOUNT} />}
-              >
-                <Route path="/AccountPermission" element={<AccountPermission />} />
-              </Route>
+                <Route
+                  path="/account-permission"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.ACCOUNT}>
+                      <AccountPermission />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Benefits */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.BENEFITS} />}
-              >
-                <Route path="/benefits" element={<Benefits />} />
-              </Route>
+                <Route
+                  path="/benefits"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.BENEFITS}>
+                      <BenefitsInsurance />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Notifications */}
-              <Route
-                element={<ProtectedRoute roles={PERMISSIONS.NOTIFICATIONS} />}
-              >
-                <Route path="/notifications" element={<Notifications />} />
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.NOTIFICATIONS}>
+                      <Notifications />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* ===== ACCOUNTANT (FIXED) ===== */}
+                <Route
+                  path="/finance"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.FINANCE_DASHBOARD}>
+                      <FinanceDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/attendance-summary"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.ATTENDANCE_SUMMARY}>
+                      <AttendanceSummary />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/payroll-approval"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.PAYROLL_APPROVAL}>
+                      <PayrollApprovalPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/payroll/:id"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.PAYROLL_DETAIL}>
+                      <PayrollDetail />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/tax-deduction"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.TAX_DEDUCTION}>
+                      <TaxAndDeduction />
+                    </ProtectedRoute>
+                  }
+                />
+
               </Route>
             </Route>
-          </Route>
 
-          {/* ===== FALLBACK ===== */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
+            {/* ===== FALLBACK ===== */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+
+          </Routes>
+        </BrowserRouter>
+      </LayoutProvider>
     </AuthProvider>
   );
 }

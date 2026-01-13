@@ -4,23 +4,24 @@ import { useAuth } from "../auth/AuthContext";
 
 interface Props {
   roles?: string[];
+  children?: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<Props> = ({ roles }) => {
+const ProtectedRoute: React.FC<Props> = ({ roles, children }) => {
   const { user } = useAuth();
 
-  // ❌ Chưa đăng nhập → đá về login
+  // ❌ Chưa đăng nhập
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // ❌ Có đăng nhập nhưng sai quyền
+  // ❌ Sai quyền
   if (roles && !roles.includes(user.role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
   // ✅ Hợp lệ
-  return <Outlet />;
+  return children ? <>{children}</> : <Outlet />;
 };
 
 export default ProtectedRoute;

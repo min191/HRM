@@ -1,36 +1,70 @@
 import React from "react";
 
-export default function AccountPermissionTable({ users }) {
+export default function AccountPermissionTable({ users, onEdit, onDelete }) {
   return (
-    <table className="min-w-full border border-border rounded-xl bg-white">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="px-4 py-2 border-b border-border text-left">Tên đăng nhập</th>
-          <th className="px-4 py-2 border-b border-border text-left">Mã NV</th>
-          <th className="px-4 py-2 border-b border-border text-left">Vai trò</th>
-          <th className="px-4 py-2 border-b border-border text-left">Phòng ban</th>
-          <th className="px-4 py-2 border-b border-border text-left">Chức vụ</th>
-          <th className="px-4 py-2 border-b border-border text-left">Trạng thái</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => (
-          <tr key={user.id} className={`${user.hidden ? "hidden" : ""}`}>
-            <td className="px-4 py-2 border-b border-border">{user.username}</td>
-            <td className="px-4 py-2 border-b border-border">{user.employeeCode}</td>
-            <td className="px-4 py-2 border-b border-border">{user.role}</td>
-            <td className="px-4 py-2 border-b border-border">{user.department}</td>
-            <td className="px-4 py-2 border-b border-border">{user.position}</td>
-            <td
-              className={`px-4 py-2 border-b border-border font-medium ${
-                user.workStatus === "Đang làm việc" ? "text-green-600" : "text-gray-400"
-              }`}
-            >
-              {user.workStatus}
-            </td>
+    <div className="overflow-x-auto rounded-xl border bg-white shadow-sm min-h-[310px]">
+      <table className="min-w-full text-sm h-full">
+        <thead>
+          <tr className="bg-gray-100 text-gray-700 h-12">
+            <th className="px-4 text-left">Tên đăng nhập</th>
+            <th className="px-4 text-left hidden md:table-cell">Mã NV</th>
+            <th className="px-4 text-left">Vai trò</th>
+            <th className="px-4 text-left hidden lg:table-cell">Phòng ban</th>
+            <th className="px-4 text-left hidden lg:table-cell">Chức vụ</th>
+            <th className="px-4 text-left">Trạng thái</th>
+            <th className="px-4 text-center w-32">Hoạt động</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          {users.map((user) => (
+            <tr
+              key={user.id}
+              className="h-[52px] border-t hover:bg-gray-50"
+            >
+              <td className="px-4 font-medium">{user.username}</td>
+              <td className="px-4 hidden md:table-cell">{user.employeeCode}</td>
+              <td className="px-4">{user.role}</td>
+              <td className="px-4 hidden lg:table-cell">{user.department}</td>
+              <td className="px-4 hidden lg:table-cell">{user.position}</td>
+              <td
+                className={`px-4 font-semibold ${
+                  user.workStatus === "Đang làm việc"
+                    ? "text-green-600"
+                    : "text-gray-400"
+                }`}
+              >
+                {user.workStatus}
+              </td>
+
+              {/* ACTION */}
+              <td className="px-4">
+                <div className="flex justify-center gap-2">
+                  <button
+                    onClick={() => onEdit(user)}
+                    className="px-2 py-1 text-xs rounded bg-blue-50 text-blue-600 hover:bg-blue-100"
+                  >
+                    Sửa
+                  </button>
+                  <button
+                    onClick={() => onDelete(user)}
+                    className="px-2 py-1 text-xs rounded bg-red-50 text-red-600 hover:bg-red-100"
+                  >
+                    Xóa
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+
+          {users.length < 5 &&
+            Array.from({ length: 5 - users.length }).map((_, i) => (
+              <tr key={i} className="h-[52px] border-t">
+                <td colSpan={7} />
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

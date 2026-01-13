@@ -2,9 +2,18 @@ import React from "react";
 
 export default function ReportsStatCard({ title, value }) {
   return (
-    <div className="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm">
-      <p className="text-sm text-gray-500">{title}</p>
-      <h3 className="text-2xl font-black mt-1 text-primary">{value}</h3>
+    <div
+      className={`p-4 border rounded-xl bg-white border-slate-200 shadow-sm 
+                  transition duration-300 ease-in-out
+                  hover:border-primary hover:shadow-lg`}
+    >
+      <p className="text-xs uppercase text-slate-500 font-medium tracking-wide">
+        {title}
+      </p>
+
+      <p className="text-2xl font-bold mt-1 text-slate-800 transition-colors duration-300 ease-in-out hover:text-primary">
+        {value}
+      </p>
     </div>
   );
 }

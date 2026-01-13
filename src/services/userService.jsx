@@ -1,7 +1,7 @@
 import { getEmployees } from "./employeeService";
-
 import { ROLES } from "../auth/roles";
 
+/* ===== USER HỆ THỐNG ===== */
 export const users = [
   { id: 1, username: "admin", password: "123", role: ROLES.ADMIN, name: "Admin System" },
   { id: 2, username: "hr", password: "123", role: ROLES.HR, name: "Nhân sự" },
@@ -9,25 +9,26 @@ export const users = [
   { id: 4, username: "employee", password: "123", role: ROLES.NHANVIEN, name: "Nhân viên" },
 ];
 
-const roles = [ROLES.HR, ROLES.KETOAN, ROLES.NHANVIEN];
+/* ROLE LUÂN PHIÊN CHO EMPLOYEE */
+const EMPLOYEE_ROLES = [ROLES.HR, ROLES.KETOAN, ROLES.NHANVIEN];
 
-
-// Tạo user từ EMPLOYEES
-export const EMPLOYEE_USERS = async () => {
+/* ===== TẠO USER TỪ EMPLOYEE ===== */
+export const getEmployeeUsers = async () => {
   const employees = await getEmployees();
+
   return employees.map((emp, index) => ({
-    id: emp.id + 1000, // tránh trùng id với users cố định
+    id: emp.id + 1000,
     username: emp.email,
     password: "123",
-    role: roles[index % roles.length],
+    role: EMPLOYEE_ROLES[index % EMPLOYEE_ROLES.length],
     name: emp.name,
   }));
 };
 
-// Login function
+/* ===== LOGIN ===== */
 export const login = async (username, password) => {
-  const employeeUsers = await EMPLOYEE_USERS();
-  const allUsers = [...users, ...employeeUsers]; // kết hợp
+  const employeeUsers = await getEmployeeUsers();
+  const allUsers = [...users, ...employeeUsers];
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -39,28 +40,21 @@ export const login = async (username, password) => {
   });
 };
 
-// Lấy danh sách user kết hợp info employee
+/* ===== LẤY DANH SÁCH USER + EMPLOYEE INFO ===== */
 export const getUserList = async () => {
   const employees = await getEmployees();
-  const employeeUsers = employees.map((emp, index) => ({
-    id: emp.id + 1000,
-    username: emp.email,
-    password: "123",
-    role: roles[index % roles.length],
-    name: emp.name,
-  }));
+  const employeeUsers = await getEmployeeUsers();
 
-  // kết hợp với thông tin employee
-  const userList = employeeUsers.map((user) => {
-    const employee = employees.find((e) => e.email === user.username);
+  const employeeUserWithInfo = employeeUsers.map((user) => {
+    const emp = employees.find((e) => e.email === user.username);
     return {
       ...user,
-      employeeCode: employee?.employeeCode || "",
-      department: employee?.department || "",
-      position: employee?.position || "",
-      workStatus: employee?.workStatus || "",
+      employeeCode: emp?.employeeCode || "",
+      department: emp?.department || "",
+      position: emp?.position || "",
+      workStatus: emp?.workStatus || "",
     };
   });
 
-  return [...users, ...userList]; // trả về cả user hệ thống + user từ employee
+  return [...users, ...employeeUserWithInfo];
 };

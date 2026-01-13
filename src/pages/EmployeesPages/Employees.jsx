@@ -1,55 +1,100 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 
-import FilterBar from '../../components/Employees/FilterBar';
-import EmployeeTable from '../../components/Employees/EmployeeTable';
-import Pagination from '../../components/Employees/Pagination';
-import { getEmployees } from '../../services/employeeService';
+import FilterBar from "../../components/Employees/FilterBar";
+import EmployeeTable from "../../components/Employees/EmployeeTable";
+import Pagination from "../../components/common/Pagination";
+import { getEmployees } from "../../services/employeeService";
+
+const ITEMS_PER_PAGE = 5;
 
 const Employees = () => {
-  const [employees, setEmployees] = useState([]); // toàn bộ data
-  const [filteredEmployees, setFilteredEmployees] = useState([]); // data đã lọc
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // tăng số items mỗi trang để vừa khung nhìn
 
-  // Fetch dữ liệu khi mount
+  // ===== FETCH DATA =====
   useEffect(() => {
     const fetchEmployees = async () => {
-      const data = await getEmployees();
-      setEmployees(data);
-      setFilteredEmployees(data);
+      try {
+        const data = await getEmployees();
+        setEmployees(data);
+        setFilteredEmployees(data);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách nhân viên:", error);
+      }
     };
     fetchEmployees();
   }, []);
 
-  // Pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentEmployees = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  // ===== PAGINATION =====
+  const totalPages = Math.ceil(filteredEmployees.length / ITEMS_PER_PAGE);
 
-  // Handle search/filter
+  const currentEmployees = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredEmployees.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredEmployees, currentPage]);
+
+  // Nếu filter làm giảm số trang → reset về trang 1
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredEmployees, totalPages, currentPage]);
+
+  // ===== SEARCH =====
   const handleSearch = (searchParams) => {
-    const filtered = employees.filter(emp => {
+    const filtered = employees.filter((emp) => {
       const matchName = searchParams.name
-        ? emp.name.toLowerCase().split(" ").some(word => word.includes(searchParams.name.toLowerCase()))
+        ? emp.name
+            .toLowerCase()
+            .split(" ")
+            .some((word) =>
+              word.includes(searchParams.name.toLowerCase())
+            )
         : true;
-      const matchId = searchParams.employeeCode
-        ? emp.employeeId.toLowerCase().includes(searchParams.employeeCode.toLowerCase())
-        : true;
-      const matchDept = searchParams.department === "Tất cả phòng ban" || emp.department === searchParams.department;
-      const matchPos = searchParams.title === "Tất cả chức danh" || emp.position === searchParams.title;
-      const matchDegree = searchParams.degree === "Chọn trình độ" || emp.education === searchParams.degree;
-      const matchSalary = searchParams.salary === "Chọn bậc lương" || emp.salaryLevel === searchParams.salary;
-      const matchStatus = searchParams.status === "Nhân sự..." || emp.status === searchParams.status;
 
-      return matchName && matchId && matchDept && matchPos && matchDegree && matchSalary && matchStatus;
+      const matchId = searchParams.employeeCode
+        ? emp.employeeId
+            .toLowerCase()
+            .includes(searchParams.employeeCode.toLowerCase())
+        : true;
+
+      const matchDept =
+        searchParams.department === "Tất cả phòng ban" ||
+        emp.department === searchParams.department;
+
+      const matchPos =
+        searchParams.title === "Tất cả chức danh" ||
+        emp.position === searchParams.title;
+
+      const matchDegree =
+        searchParams.degree === "Chọn trình độ" ||
+        emp.education === searchParams.degree;
+
+      const matchSalary =
+        searchParams.salary === "Chọn bậc lương" ||
+        emp.salaryLevel === searchParams.salary;
+
+      const matchStatus =
+        searchParams.status === "Nhân sự..." ||
+        emp.status === searchParams.status;
+
+      return (
+        matchName &&
+        matchId &&
+        matchDept &&
+        matchPos &&
+        matchDegree &&
+        matchSalary &&
+        matchStatus
+      );
     });
 
     setFilteredEmployees(filtered);
     setCurrentPage(1);
   };
 
-  // Handle reset
+  // ===== RESET =====
   const handleReset = () => {
     setFilteredEmployees(employees);
     setCurrentPage(1);
@@ -57,21 +102,20 @@ const Employees = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6">
-      
       {/* FILTER */}
-      <div className="bg-white shadow-md rounded p-4">
+      <div className="bg-white shadow-sm rounded-xl p-4">
         <FilterBar onSearch={handleSearch} onReset={handleReset} />
       </div>
 
       {/* TABLE */}
-      <div className="bg-white shadow-md rounded overflow-x-auto">
-        <EmployeeTable employees={currentEmployees} itemsPerPage={itemsPerPage} />
+      <div className="bg-white shadow-sm rounded-xl overflow-x-auto">
+        <EmployeeTable employees={currentEmployees} />
       </div>
 
       {/* PAGINATION */}
       <div className="flex justify-end">
         <Pagination
-          currentPage={currentPage}
+          page={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />

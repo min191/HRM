@@ -14,7 +14,6 @@ export default function ApprovalsEmployee() {
   const [loading, setLoading] = useState(true);
   const [employee, setEmployee] = useState(null);
 
-  // State cho form mới
   const [newRequest, setNewRequest] = useState({
     type: "",
     reason: "",
@@ -24,7 +23,7 @@ export default function ApprovalsEmployee() {
     history: [],
   });
 
-  const [showPopup, setShowPopup] = useState(false); // popup state
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -50,12 +49,12 @@ export default function ApprovalsEmployee() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!newRequest.type || !newRequest.startDate || !newRequest.endDate || !newRequest.reason) {
       alert("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
-    // Thêm field history khi tạo mới
     const newApproval = {
       ...newRequest,
       employeeId: currentUser.id,
@@ -63,7 +62,6 @@ export default function ApprovalsEmployee() {
     };
 
     await createApproval(newApproval);
-
     setNewRequest({
       type: "",
       reason: "",
@@ -73,54 +71,77 @@ export default function ApprovalsEmployee() {
       history: [],
     });
 
-    setShowPopup(false); // ẩn popup sau khi submit
+    setShowPopup(false);
     fetchApprovals();
   };
 
-  if (!currentUser || !employee) return <p>Đang tải thông tin nhân viên...</p>;
+  if (!currentUser || !employee) {
+    return <p className="p-6 text-sm text-gray-500">Đang tải thông tin nhân viên...</p>;
+  }
 
   return (
-    <aside className="w-[400px] bg-background border-l border-border flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 text-sm">
+    <aside className="flex flex-col h-full w-full max-w-md lg:max-w-lg bg-white border-l border-border">
+
+      {/* ===== HEADER ===== */}
+      <div className="sticky top-0 z-10 bg-white border-b border-border px-6 py-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-gray-800">
+          Yêu cầu nghỉ phép
+        </h2>
+
+        <button
+          onClick={() => setShowPopup(true)}
+          className="
+            bg-primary text-white
+            px-4 py-2 rounded-lg text-sm font-medium
+            hover:bg-primaryDark transition
+            shadow-sm
+          "
+        >
+          + Thêm mới
+        </button>
+      </div>
+
+      {/* ===== CONTENT ===== */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 text-sm bg-backgroundLight">
         <EmployeeInfo employee={employee} />
 
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Yêu cầu nghỉ phép</h2>
-          <button
-            onClick={() => setShowPopup(true)}
-            className="bg-primary text-white px-3 py-1 rounded hover:bg-primaryDark transition"
-          >
-            Thêm mới
-          </button>
-        </div>
-
         {loading ? (
-          <p>Đang tải...</p>
+          <p className="text-gray-500">Đang tải dữ liệu...</p>
         ) : approvals.length === 0 ? (
-          <p>Chưa có yêu cầu nào</p>
+          <div className="text-center text-gray-400 py-10">
+            Chưa có yêu cầu nào
+          </div>
         ) : (
-          approvals.map((item) => <RequestCard key={item.id} request={item} />)
-        )}
-
-        {/* Popup */}
-        {showPopup && (
-          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-xl w-[350px] relative">
-              <button
-                onClick={() => setShowPopup(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-              >
-                ✕
-              </button>
-              <AddRequestForm
-                request={newRequest}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-              />
-            </div>
+          <div className="space-y-4">
+            {approvals.map((item) => (
+              <RequestCard key={item.id} request={item} />
+            ))}
           </div>
         )}
       </div>
+
+      {/* ===== POPUP ===== */}
+      {showPopup && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          onClick={() => setShowPopup(false)} // click ngoài là đóng
+        >
+          <div
+            className="
+        bg-white rounded-2xl w-full max-w-sm p-6
+        shadow-xl animate-fade-in
+      "
+            onClick={(e) => e.stopPropagation()} // chặn click lan vào overlay
+          >
+            <AddRequestForm
+              request={newRequest}
+              onChange={handleChange}
+              onSubmit={handleSubmit}
+            />
+          </div>
+        </div>
+      )}
+
     </aside>
   );
 }

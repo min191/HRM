@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header"; // Header chung
 
@@ -11,9 +11,16 @@ export default function MainLayout() {
     "/assignments": "Phân công công việc",
     "/reports": "Báo cáo & Thống kê",
     "/approvals": "Duyệt yêu cầu",
-    "/AccountPermission": "Quản lý tài khoản & Phân quyền",
+    "/approvals-employee": "Yêu cầu",
+    "/account-permission": "Quản lý tài khoản & Phân quyền",
     "/benefits": "Phúc lợi & Bảo hiểm",
     "/notifications": "Thông báo & Nhắc nhở",
+
+    // ===== ACCOUNTANT PAGES =====
+    "/finance": "Tổng quan tài chính",
+    "/attendance-summary": "Tổng hợp chấm công",
+    "/payroll-approval": "Duyệt bảng lương",
+    "/tax-deduction": "Thuế & Khấu trừ",
   };
 
   return (

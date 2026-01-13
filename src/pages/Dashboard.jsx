@@ -4,7 +4,7 @@ import { getEmployees } from "../services/employeeService";
 import RecentEmployees from "../components/Dashboard/RecentEmployees";
 import UpcomingEvents from "../components/Dashboard/UpcomingEvents";
 import Action from "../components/Dashboard/Action";
-import DashboardStatCard from "../components/Dashboard/DashboardStatCard";
+import ReportsStatCard from "../components/Reports/ReportsStatCard";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Dashboard() {
@@ -59,10 +59,10 @@ export default function Dashboard() {
           </p>
         ) : (
           <>
-            <DashboardStatCard title="Tổng nhân sự" value={stats.totalEmployees} />
-            <DashboardStatCard title="Nhân viên mới" value={stats.newEmployees} highlight />
-            <DashboardStatCard title="Đã nghỉ việc" value={stats.resignedEmployees} />
-            <DashboardStatCard title="Đang chờ duyệt" value={stats.pendingRequests} />
+            <ReportsStatCard title="Tổng nhân sự" value={stats.totalEmployees} />
+            <ReportsStatCard title="Nhân viên mới" value={stats.newEmployees} highlight />
+            <ReportsStatCard title="Đã nghỉ việc" value={stats.resignedEmployees} />
+            <ReportsStatCard title="Đang chờ duyệt" value={stats.pendingRequests} />
           </>
         )}
       </div>
