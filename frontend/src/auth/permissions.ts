@@ -1,0 +1,85 @@
+
+import { ROLES } from "./roles";
+
+export const PERMISSIONS = {
+  DASHBOARD: [
+    ROLES.ADMIN,
+    ROLES.HR,
+    ROLES.KETOAN,
+    ROLES.NHANVIEN,
+    ROLES.GIAMDOC,
+  ],
+
+  EMPLOYEES: [
+    ROLES.ADMIN,
+    ROLES.HR,
+    ROLES.GIAMDOC,
+  ],
+
+  EMPLOYEE_DETAIL: [
+    ROLES.ADMIN,
+    ROLES.HR,
+    ROLES.GIAMDOC,
+  ],
+
+  ASSIGNMENTS: [
+    ROLES.ADMIN,
+  ],
+
+  APPROVALS: [
+    ROLES.ADMIN,
+    ROLES.HR,
+
+  ],
+
+  APPROVALS_EMPLOYEE: [
+    ROLES.KETOAN,
+    ROLES.NHANVIEN,
+    ROLES.HR,
+    ROLES.GIAMDOC,
+  ],
+
+  ACCOUNT: [
+    ROLES.ADMIN,
+  ],
+
+  BENEFITS: [
+    ROLES.ADMIN,
+    ROLES.HR,
+    ROLES.KETOAN,
+  ],
+
+  NOTIFICATIONS: [
+    ROLES.ADMIN,
+    ROLES.HR,
+    ROLES.NHANVIEN,
+    ROLES.KETOAN,
+    ROLES.GIAMDOC,
+  ],
+
+  FINANCE_DASHBOARD: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+    ROLES.GIAMDOC,
+  ],
+
+  ATTENDANCE_SUMMARY: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  PAYROLL_APPROVAL: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  PAYROLL_DETAIL: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+
+  TAX_DEDUCTION: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+  ],
+};
