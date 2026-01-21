@@ -5,23 +5,38 @@ import Header from "../components/Header/Header"; // Header chung
 
 export default function MainLayout() {
   // Mapping pathname => title
-  const pageTitles = {
-    "/": "Dashboard",
-    "/employees": "Hồ sơ nhân viên",
-    "/assignments": "Phân công công việc",
-    "/reports": "Báo cáo & Thống kê",
-    "/approvals": "Duyệt yêu cầu",
-    "/approvals-employee": "Yêu cầu",
-    "/account-permission": "Quản lý tài khoản & Phân quyền",
-    "/benefits": "Phúc lợi & Bảo hiểm",
-    "/notifications": "Thông báo & Nhắc nhở",
+const pageTitles = {
+  // ===== CORE =====
+  "/": "Dashboard",
+  "/employees": "Hồ sơ nhân viên",
+  "/employees/:id": "Chi tiết nhân viên",
 
-    // ===== ACCOUNTANT PAGES =====
-    "/finance": "Tổng quan tài chính",
-    "/attendance-summary": "Tổng hợp chấm công",
-    "/payroll-approval": "Duyệt bảng lương",
-    "/tax-deduction": "Thuế & Khấu trừ",
-  };
+  // ===== ASSIGNMENTS =====
+  "/assignments": "Phân công công việc (Quản lý)",
+  "/assignments_user": "Phân công công việc",
+
+  // ===== REPORT / APPROVAL =====
+  "/reports": "Báo cáo & Thống kê",
+  "/approvals": "Duyệt yêu cầu",
+  "/approvals-employee": "Yêu cầu",
+
+  // ===== SYSTEM =====
+  "/account-permission": "Quản lý tài khoản & Phân quyền",
+  "/benefits": "Phúc lợi & Bảo hiểm",
+  "/notifications": "Thông báo & Nhắc nhở",
+
+  // ===== ACCOUNTANT =====
+  "/finance": "Tổng quan tài chính",
+  "/attendance-summary": "Tổng hợp chấm công",
+  "/payroll-approval": "Duyệt bảng lương",
+  "/payroll/:id": "Chi tiết bảng lương",
+  "/salary/:id": "Chi tiết lương",
+  "/tax-deduction": "Thuế & Khấu trừ",
+
+  // ===== AUTH =====
+  "/login": "Đăng nhập",
+  "/unauthorized": "Không có quyền truy cập",
+};
 
   return (
     <div className="flex min-h-screen bg-slate-100">

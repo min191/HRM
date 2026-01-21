@@ -1,25 +1,16 @@
-// src/config/env.js
 require("dotenv").config();
 
-function must(name, fallback = undefined) {
-  const v = process.env[name] ?? fallback;
-  if (v === undefined || v === "") throw new Error(`Missing env: ${name}`);
-  return v;
-}
-
-const env = {
-  NODE_ENV: process.env.NODE_ENV || "development",
-  PORT: Number(process.env.PORT || 4000),
-
-  DB_HOST: must("DB_HOST", "localhost"),
-  DB_PORT: Number(process.env.DB_PORT || 3306),
-  DB_USER: must("DB_USER", "root"),
-  DB_PASS: process.env.DB_PASS || "",
-  DB_NAME: must("DB_NAME", "datahrm"),
-
-  CORS_ORIGIN: process.env.CORS_ORIGIN || "*",
-
-  JWT_SECRET: process.env.JWT_SECRET || "change_me",
+module.exports = {
+  port: Number(process.env.PORT || 5000),
+  db: {
+    host: process.env.DB_HOST || "localhost",
+    port: Number(process.env.DB_PORT || 3306),
+    user: process.env.DB_USER || "root",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_NAME || "datahrm",
+  },
+  jwt: {
+    accessSecret: process.env.JWT_ACCESS_SECRET || "access_secret",
+    accessExpires: process.env.JWT_ACCESS_EXPIRES || "1d",
+  },
 };
-
-module.exports = env;

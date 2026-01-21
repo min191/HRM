@@ -1,4 +1,3 @@
-
 import { ROLES } from "./roles";
 
 export const PERMISSIONS = {
@@ -22,23 +21,35 @@ export const PERMISSIONS = {
     ROLES.GIAMDOC,
   ],
 
-  ASSIGNMENTS: [
+  // ===== ASSIGNMENTS =====
+  ASSIGNMENTS_ADMIN: [
     ROLES.ADMIN,
+    ROLES.GIAMDOC,
   ],
 
-  APPROVALS: [
+  ASSIGNMENTS_USER: [
+    ROLES.ADMIN,      // ✅ thêm
+    ROLES.HR,
+    ROLES.NHANVIEN,
+    ROLES.KETOAN,
+    ROLES.GIAMDOC,
+  ],
+
+  // ===== APPROVALS =====
+  APPROVALS_ADMIN: [
     ROLES.ADMIN,
     ROLES.HR,
-
   ],
 
   APPROVALS_EMPLOYEE: [
+    ROLES.ADMIN,      // ✅ thêm
     ROLES.KETOAN,
     ROLES.NHANVIEN,
     ROLES.HR,
     ROLES.GIAMDOC,
   ],
 
+  // ===== SYSTEM =====
   ACCOUNT: [
     ROLES.ADMIN,
   ],
@@ -57,6 +68,7 @@ export const PERMISSIONS = {
     ROLES.GIAMDOC,
   ],
 
+  // ===== ACCOUNTANT =====
   FINANCE_DASHBOARD: [
     ROLES.ADMIN,
     ROLES.KETOAN,
@@ -76,6 +88,12 @@ export const PERMISSIONS = {
   PAYROLL_DETAIL: [
     ROLES.ADMIN,
     ROLES.KETOAN,
+  ],
+
+  SALARY_DETAIL: [
+    ROLES.ADMIN,
+    ROLES.KETOAN,
+    ROLES.GIAMDOC,
   ],
 
   TAX_DEDUCTION: [

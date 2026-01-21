@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { PERMISSIONS } from "../../auth/permissions";
 import { useAuth } from "../../auth/AuthContext";
-import { getEmployeeById } from "../../services/employeeService"
+import { getEmployeeById } from "../../services/employeeService";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -13,12 +13,11 @@ export default function Sidebar() {
   useEffect(() => {
     // Lấy thông tin nhân viên từ employeeService
     if (user?.id) {
-      getEmployeeById(user.id).then(emp => {
+      getEmployeeById(user.id).then((emp) => {
         setUserName(emp.name); // lấy tên thật
       });
     }
   }, [user]);
-
 
   const handleLogout = () => {
     logout();
@@ -26,26 +25,101 @@ export default function Sidebar() {
   };
 
   // Dynamic menu memoized
-  const menu = React.useMemo(() => [
-    { path: "/", icon: "dashboard", label: "Báo cáo & Thống kê", permissions: PERMISSIONS.DASHBOARD },
-    { path: "/employees", icon: "group", label: "Hồ sơ nhân viên", permissions: PERMISSIONS.EMPLOYEES },
-    { path: "/assignments", icon: "assignment_ind", label: "Phân công công việc", permissions: PERMISSIONS.ASSIGNMENTS },
-    // { path: "/reports", icon: "analytics", label: "Báo cáo & Thống kê", permissions: PERMISSIONS.REPORTS },
-    { path: "/approvals", icon: "fact_check", label: "Duyệt yêu cầu", permissions: PERMISSIONS.APPROVALS },
-    { path: "/approvals-employee", icon: "fact_check", label: "Yêu cầu", permissions: PERMISSIONS.APPROVALS_EMPLOYEE },
+  const menu = React.useMemo(
+    () => [
+      {
+        path: "/",
+        icon: "dashboard",
+        label: "Báo cáo & Thống kê",
+        permissions: PERMISSIONS.DASHBOARD,
+      },
+      {
+        path: "/employees",
+        icon: "group",
+        label: "Hồ sơ nhân viên",
+        permissions: PERMISSIONS.EMPLOYEES,
+      },
+      {
+        path: "/assignments",
+        icon: "assignment_ind",
+        label: "Phân công công việc",
+        permissions: PERMISSIONS.ASSIGNMENTS_ADMIN,
+      },
+      {
+        path: "/assignments_user",
+        icon: "assignment_ind",
+        label: "Phân công công việc",
+        permissions: PERMISSIONS.ASSIGNMENTS_USER,
+      },
 
-    // ===== ACCOUNTANT =====
-    { path: "/finance", icon: "account_balance", label: "Tổng quan tài chính", permissions: PERMISSIONS.FINANCE_DASHBOARD },
-    { path: "/attendance-summary", icon: "event_available", label: "Tổng hợp chấm công", permissions: PERMISSIONS.ATTENDANCE_SUMMARY },
-    { path: "/payroll-approval", icon: "payments", label: "Duyệt bảng lương", permissions: PERMISSIONS.PAYROLL_APPROVAL },
-    { path: "/tax-deduction", icon: "request_quote", label: "Thuế & Khấu trừ", permissions: PERMISSIONS.TAX_DEDUCTION },
+      {
+        path: "/approvals",
+        icon: "fact_check",
+        label: "Duyệt yêu cầu",
+        permissions: PERMISSIONS.APPROVALS_ADMIN,
+      },
+      {
+        path: "/approvals-employee",
+        icon: "fact_check",
+        label: "Yêu cầu",
+        permissions: PERMISSIONS.APPROVALS_EMPLOYEE,
+      },
 
-    { path: "/account-permission", icon: "manage_accounts", label: "Quản lý tài khoản & Phân quyền", permissions: PERMISSIONS.ACCOUNT },
-    { path: "/benefits", icon: "health_and_safety", label: "Phúc lợi & Bảo hiểm", permissions: PERMISSIONS.BENEFITS },
-    { path: "/notifications", icon: "notifications", label: "Thông báo & Nhắc nhở", permissions: PERMISSIONS.NOTIFICATIONS },
-  ], [user?.role]);
+      // ===== ACCOUNTANT =====
+      {
+        path: "/finance",
+        icon: "account_balance",
+        label: "Tổng quan tài chính",
+        permissions: PERMISSIONS.FINANCE_DASHBOARD,
+      },
+      {
+        path: "/attendance-summary",
+        icon: "event_available",
+        label: "Tổng hợp chấm công",
+        permissions: PERMISSIONS.ATTENDANCE_SUMMARY,
+      },
+      {
+        path: "/payroll-approval",
+        icon: "payments",
+        label: "Duyệt bảng lương",
+        permissions: PERMISSIONS.PAYROLL_APPROVAL,
+      },
+      {
+        path: "/tax-deduction",
+        icon: "request_quote",
+        label: "Thuế & Khấu trừ",
+        permissions: PERMISSIONS.TAX_DEDUCTION,
+      },
 
+      // 👉 OPTIONAL – chỉ hiện nếu bạn muốn truy cập trực tiếp
+      {
+        path: "/salary",
+        icon: "receipt_long",
+        label: "Chi tiết lương",
+        permissions: PERMISSIONS.SALARY_DETAIL,
+      },
 
+      {
+        path: "/account-permission",
+        icon: "manage_accounts",
+        label: "Quản lý tài khoản & Phân quyền",
+        permissions: PERMISSIONS.ACCOUNT,
+      },
+      {
+        path: "/benefits",
+        icon: "health_and_safety",
+        label: "Phúc lợi & Bảo hiểm",
+        permissions: PERMISSIONS.BENEFITS,
+      },
+      {
+        path: "/notifications",
+        icon: "notifications",
+        label: "Thông báo & Nhắc nhở",
+        permissions: PERMISSIONS.NOTIFICATIONS,
+      },
+    ],
+    [user?.role],
+  );
 
   return (
     <aside className="w-64 flex-shrink-0 flex flex-col bg-white border-r border-gray-200 h-screen fixed">
@@ -66,8 +140,11 @@ export default function Sidebar() {
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1 px-2">
           {menu
-            .filter(item => !item.permissions || item.permissions.includes(userRole))
-            .map(item => (
+            .filter(
+              (item) =>
+                !item.permissions || item.permissions.includes(userRole),
+            )
+            .map((item) => (
               <li key={item.path}>
                 <NavLink
                   to={item.path}

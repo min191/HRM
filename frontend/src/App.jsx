@@ -12,19 +12,22 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/EmployeesPages/Employees";
 import EmployeesDetail from "./pages/EmployeesPages/EmployeesDetail";
-import Assignment from "./pages/Assignment";
+import AssignmentAdmin from "./pages/Assignments/AssignmentAdmin";
 import Reports from "./pages/Reports";
-import Approvals from "./pages/Approvals";
-import ApprovalsEmployee from "./pages/ApprovalsEmployee";
+import ApprovalsAdmin from "./pages/Approvals/ApprovalsAdmin";
+import ApprovalsEmployee from "./pages/Approvals/ApprovalsEmployee";
 import AccountPermission from "./pages/AccountPermission";
 import BenefitsInsurance from "./pages/BenefitsInsurance";
 import Notifications from "./pages/Notifications";
 
+/* ===== ACCOUNTANT ===== */
 import AttendanceSummary from "./pages/AccountantPages/AttendanceSummary";
 import FinanceDashboard from "./pages/AccountantPages/FinanceDashboard";
 import PayrollApprovalPage from "./pages/AccountantPages/PayrollApprovalPage";
 import PayrollDetail from "./pages/AccountantPages/PayrollDetail";
 import TaxAndDeduction from "./pages/AccountantPages/TaxAndDeduction";
+import SalaryDetail from "./pages/AccountantPages/SalaryDetail";
+import AssignmentsUser from "./pages/Assignments/AssignmentsUser";
 
 export default function App() {
   return (
@@ -72,8 +75,16 @@ export default function App() {
                 <Route
                   path="/assignments"
                   element={
-                    <ProtectedRoute roles={PERMISSIONS.ASSIGNMENTS}>
-                      <Assignment />
+                    <ProtectedRoute roles={PERMISSIONS.ASSIGNMENTS_ADMIN}>
+                      <AssignmentAdmin />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/assignments_user"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.ASSIGNMENTS_USER}>
+                      <AssignmentsUser />
                     </ProtectedRoute>
                   }
                 />
@@ -90,8 +101,8 @@ export default function App() {
                 <Route
                   path="/approvals"
                   element={
-                    <ProtectedRoute roles={PERMISSIONS.APPROVALS}>
-                      <Approvals />
+                    <ProtectedRoute roles={PERMISSIONS.APPROVALS_ADMIN}>
+                      <ApprovalsAdmin />
                     </ProtectedRoute>
                   }
                 />
@@ -132,7 +143,7 @@ export default function App() {
                   }
                 />
 
-                {/* ===== ACCOUNTANT (FIXED) ===== */}
+                {/* ===== ACCOUNTANT ===== */}
                 <Route
                   path="/finance"
                   element={
@@ -174,6 +185,15 @@ export default function App() {
                   element={
                     <ProtectedRoute roles={PERMISSIONS.TAX_DEDUCTION}>
                       <TaxAndDeduction />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="/salary"
+                  element={
+                    <ProtectedRoute roles={PERMISSIONS.SALARY_DETAIL}>
+                      <SalaryDetail />
                     </ProtectedRoute>
                   }
                 />

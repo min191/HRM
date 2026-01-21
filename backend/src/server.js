@@ -1,21 +1,7 @@
-// src/server.js
-const http = require("http");
+require("dotenv").config();
 const app = require("./app");
 
-const PORT = Number(process.env.PORT || 4000);
-
-const server = http.createServer(app);
-
-server.listen(PORT, () => {
-  console.log(`✅ HRM API running on: http://localhost:${PORT}`);
-  console.log(`✅ Health check:       http://localhost:${PORT}/api/health`);
-});
-
-// Optional: graceful shutdown (Ctrl+C)
-process.on("SIGINT", async () => {
-  console.log("\n🛑 Shutting down server...");
-  server.close(() => {
-    console.log("✅ Server closed.");
-    process.exit(0);
-  });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`API running on http://localhost:${PORT}`);
 });
